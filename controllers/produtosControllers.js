@@ -1,16 +1,16 @@
 const conexao = require("../db/conexao")
 
 exports.criarProdutos = (req, res) => {
-    const { nome, preco, quantidade } = req.body
+    const {nome, preco, quantidade} = req.body;
     conexao.query(
-        "INSERT INTO produtos (nome, preco, quantidade) VALUES (?,?,?)"
+        "INSERT INTO produtos (nome, preco, quantidade) VALUES (?,?,?)",
         [nome, preco, quantidade],
         (err) => {
             if (err) return res.status(500).send("Erro ao cadastrar produtos");
-                res.status(201).send("Produto cadastrado com sucesso")
+            res.status(201).send("Produto cadastrado com sucesso");
         } 
-    )
-}
+    );
+};
 
 exports.listarProdutos =(req, res) => {
     conexao.query("SELECT * FROM produtos", (err, results) => {
@@ -20,14 +20,14 @@ exports.listarProdutos =(req, res) => {
 }
 
 exports.atualizarProdutos = (req, res) => {
-    const {id} = req.params
-    const {nome, preco} = req.body
-    const query = "UPDATE produtos SET nome = ?, preco = ?, WHERE id = ?"
+    const {id} = req.params;
+    const {nome, preco} = req.body;
+    const query = "UPDATE produtos SET nome = ?, preco = ? WHERE id = ?";
 
     conexao.query(query, [nome, preco, id], (err, results) => {
         if(err) return res.status(500).send("Erro ao atualizar")
         if(results.affectedRows === 0) return res.status(404).send("Produto não encontrado")
-            res.send("Produto atualizado com sucesso") 
+        res.send("Produto atualizado com sucesso") 
     })
 }
 
